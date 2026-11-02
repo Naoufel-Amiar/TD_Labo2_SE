@@ -1,0 +1,29 @@
+
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Compiler Labo 2",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "-O0",
+                "${workspaceFolder}/labo2_etudiants.cpp",
+                "-o",
+                "${workspaceFolder}/labo2_etudiants",
+                "-pthread",
+                "-lX11"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+# Executable C++
+/labo2_etudiants
+
+# Fichiers objets
+*.o
+
+# Fichiers temporaires
+*~

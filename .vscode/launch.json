@@ -1,0 +1,27 @@
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Labo 2 - Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/labo2_etudiants",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "Compiler Labo 2",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}
