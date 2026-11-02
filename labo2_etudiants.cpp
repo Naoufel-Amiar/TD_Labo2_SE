@@ -84,267 +84,157 @@ bool threadEnAttente[MAX] = {};
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
 
-
 void create(int i, craft_t *c) {
+    using Horloge = chrono::steady_clock;
 
-  // DEBUT DU CHRONOMETRAGE DU CYCLE
-  {
-      lock_guard<mutex> verrouChrono(mutexChrono);
-
-      if (threadsEntres == 0) {
-          debutCycle = chrono::steady_clock::now();
-          numeroCycle++;
-      }
-
-      threadsEntres++;
-  }
-
-    // =====================================================
-    // 1. IDENTIFICATION DES MATERIAUX
-    // =====================================================
+    // Debut du cycle : le premier thread lance le chronometre.
+    {
+        lock_guard<mutex> garde(mutexChrono);
+        if (threadsEntres == 0) {
+            debutCycle = Horloge::now();
+            ++numeroCycle;
+        }
+        ++threadsEntres;
+    }
 
     const string materiau1 = c->name[i];
     const string materiau2 = c->name[(i + 1) % MAX];
     const string objet = c->craft_name[i];
 
-    // Affiche un message et l'enregistre dans le fichier.
+    // Une seule ecriture a la fois dans la console et le fichier.
     auto journaliser = [&](const string& message) {
-        lock_guard<mutex> verrou(mutexFichier);
-
+        lock_guard<mutex> garde(mutexFichier);
         cout << message << endl;
-
         ofstream fichier("sortieCreation.txt", ios::app);
-        if (fichier.is_open()) {
-            fichier << message << endl;
+        if (!fichier || !(fichier << message << '\n')) {
+            cerr << "Erreur : ecriture dans sortieCreation.txt" << endl;
         }
     };
 
-    // =====================================================
-    // 2. ENREGISTREMENT DE LA DEMANDE
-    // =====================================================
+    // Tous les chemins de sortie doivent signaler la fin du thread.
+    auto terminerThread = [&]() {
+        bool dernier = false;
+        int cycle = 0;
+        long long duree = 0;
+        long long cumul = 0;
+        {
+            lock_guard<mutex> garde(mutexChrono);
+            ++threadsTermines;
+            if (threadsTermines == MAX) {
+                duree = chrono::duration_cast<chrono::milliseconds>(
+                    Horloge::now() - debutCycle).count();
+                tempsTotalCycles += duree;
+                cumul = tempsTotalCycles;
+                cycle = numeroCycle;
+                threadsEntres = 0;
+                threadsTermines = 0;
+                dernier = true;
+            }
+        }
+        if (dernier) {
+            journaliser("Cycle " + to_string(cycle) +
+                        " - duree : " + to_string(duree) + " ms");
+            journaliser("Temps total cumule : " +
+                        to_string(cumul) + " ms");
+        }
+    };
 
     unique_lock<mutex> verrou(mutexMateriaux);
-
-    // Ce type d'objet a deja atteint son objectif.
     if (c->craft[i] >= 10) {
+        verrou.unlock();
+        terminerThread();
         return;
     }
 
-    // Chaque demande recoit un ticket unique.
+    // Les demandes plus anciennes ont priorite en cas de conflit.
     ticketThread[i] = prochainTicket++;
     threadEnAttente[i] = true;
 
-    // =====================================================
-    // 3. VERIFICATION DES CONDITIONS
-    // =====================================================
+    auto disponible = [&](const string& m) {
+        return find(c->liste.begin(), c->liste.end(), m) != c->liste.end();
+    };
 
     auto peutFabriquer = [&]() {
-
-        // Les deux materiaux doivent etre disponibles.
-        bool disponible1 = find(
-            c->liste.begin(),
-            c->liste.end(),
-            materiau1
-        ) != c->liste.end();
-
-        bool disponible2 = find(
-            c->liste.begin(),
-            c->liste.end(),
-            materiau2
-        ) != c->liste.end();
-
-        if (!disponible1 || !disponible2) {
+        if (!disponible(materiau1) || !disponible(materiau2))
             return false;
-        }
-
-        // Respecter les demandes plus anciennes
-        // si elles utilisent un materiau commun.
-        for (int j = 0; j < MAX; j++) {
-
-            if (j == i || !threadEnAttente[j]) {
+        for (int j = 0; j < MAX; ++j) {
+            if (j == i || !threadEnAttente[j] ||
+                ticketThread[j] >= ticketThread[i])
                 continue;
-            }
-
-            if (ticketThread[j] >= ticketThread[i]) {
-                continue;
-            }
-
-            string autre1 = c->name[j];
-            string autre2 = c->name[(j + 1) % MAX];
-
-            bool conflit =
-                materiau1 == autre1 ||
-                materiau1 == autre2 ||
-                materiau2 == autre1 ||
-                materiau2 == autre2;
-
-            if (conflit) {
+            const string& autre1 = c->name[j];
+            const string& autre2 = c->name[(j + 1) % MAX];
+            if (materiau1 == autre1 || materiau1 == autre2 ||
+                materiau2 == autre1 || materiau2 == autre2)
                 return false;
-            }
         }
-
         return true;
     };
 
-    // =====================================================
-    // 4. ATTENTE DES MATERIAUX
-    // =====================================================
-
     if (!peutFabriquer()) {
-
-        string materiauAttendu = "materiaux";
-
-        if (find(c->liste.begin(), c->liste.end(),
-                 materiau1) == c->liste.end()) {
-            materiauAttendu = materiau1;
+        string attendu;
+        if (!disponible(materiau1)) attendu = materiau1;
+        else if (!disponible(materiau2)) attendu = materiau2;
+        else {
+            // Materiaux libres : une demande anterieure est prioritaire.
+            for (int j = 0; j < MAX; ++j) {
+                if (j == i || !threadEnAttente[j] ||
+                    ticketThread[j] >= ticketThread[i]) continue;
+                const string& autre1 = c->name[j];
+                const string& autre2 = c->name[(j + 1) % MAX];
+                if (materiau1 == autre1 || materiau1 == autre2) {
+                    attendu = materiau1;
+                    break;
+                }
+                if (materiau2 == autre1 || materiau2 == autre2) {
+                    attendu = materiau2;
+                    break;
+                }
+            }
         }
-        else if (find(c->liste.begin(), c->liste.end(),
-                      materiau2) == c->liste.end()) {
-            materiauAttendu = materiau2;
-        }
-
+        if (attendu.empty()) attendu = materiau1; // Securite defensive.
         a[i] = "Waiting";
         b[i] = "Waiting";
-
-        // Ne pas monopoliser le mutex pour le journal.
         verrou.unlock();
-
-        journaliser(objet + " en attente de " +
-                    materiauAttendu + ".");
-
+        journaliser(objet + " en attente de " + attendu + ".");
         verrou.lock();
     }
 
-    // Attend sans conserver le verrou pendant le sommeil.
-    // La condition est reverifiee apres chaque reveil.
+    // wait libere le mutex pendant l'attente ; reveil + revalidation.
     cvMateriaux.wait(verrou, peutFabriquer);
-
-    // =====================================================
-    // 5. RESERVATION SIMULTANEE
-    // =====================================================
-
+    // Reservation atomique : jamais un seul materiau sans le second.
     c->liste.remove(materiau1);
     c->liste.remove(materiau2);
-
     threadEnAttente[i] = false;
-
     a[i] = materiau1;
     b[i] = materiau2;
-
     verrou.unlock();
-
-    // D'autres demandes independantes peuvent progresser.
     cvMateriaux.notify_all();
 
-    // =====================================================
-    // 6. FABRICATION
-    // =====================================================
-
     journaliser(objet + " en creation.");
-
-    // Debut de la mesure de fabrication.
-    auto debutCreation = chrono::steady_clock::now();
-
-    // Simulation du temps de fabrication : 200 ms.
-    this_thread::sleep_for(
-        chrono::milliseconds(200)
-    );
-
-    // Fin de la mesure de fabrication.
-    auto finCreation = chrono::steady_clock::now();
-
-    // Calcul de la duree reelle en millisecondes.
-    auto dureeCreation = chrono::duration_cast<
-        chrono::milliseconds
-    >(finCreation - debutCreation).count();
-
-    // =====================================================
-    // 7. LIBERATION ET COMPTEUR
-    // =====================================================
+    const auto debut = Horloge::now();
+    this_thread::sleep_for(chrono::milliseconds(200));
+    const auto dureeFabrication = chrono::duration_cast<chrono::milliseconds>(
+        Horloge::now() - debut).count();
 
     verrou.lock();
-
     c->liste.push_back(materiau1);
     c->liste.push_back(materiau2);
-
-    c->craft[i]++;
-
-    int nombreCree = c->craft[i];
-
-    // Verifier si les sept objectifs sont atteints.
-    bool toutTermine = true;
-
-    for (int j = 0; j < MAX; j++) {
+    const int nombre = ++c->craft[i];
+    bool tousTermines = true;
+    for (int j = 0; j < MAX; ++j) {
         if (c->craft[j] < 10) {
-            toutTermine = false;
+            tousTermines = false;
             break;
         }
     }
-
-    if (toutTermine) {
-        done = true;
-    }
-
+    if (tousTermines) done = true;
     verrou.unlock();
-
-    // Reveiller les threads qui attendent ces ressources.
     cvMateriaux.notify_all();
 
-    journaliser(objet + " cree : " +
-                to_string(nombreCree));
-    
-    // Enregistrer le temps de fabrication mesure.
+    journaliser(objet + " cree : " + to_string(nombre));
     journaliser(objet + " - duree de fabrication : " +
-                to_string(dureeCreation) + " ms");
-
-
-    // FIN DU CHRONOMETRAGE DU CYCLE
-    bool dernierThread = false;
-    int cycleTermine = 0;
-    long long dureeCycle = 0;
-    long long dureeCumulee = 0;
-    {
-        lock_guard<mutex> verrouChrono(mutexChrono);
-
-        threadsTermines++;
-
-        // Le dernier des sept threads termine le cycle.
-        if (threadsTermines == MAX) {
-
-            auto finCycle = chrono::steady_clock::now();
-
-            dureeCycle = chrono::duration_cast<
-                chrono::milliseconds
-            >(finCycle - debutCycle).count();
-
-            tempsTotalCycles += dureeCycle;
-            dureeCumulee = tempsTotalCycles;
-            cycleTermine = numeroCycle;
-
-            // Preparation du prochain cycle.
-            threadsEntres = 0;
-            threadsTermines = 0;
-
-            dernierThread = true;
-        }
-    }
-
-// Afficher une seule fois le bilan du cycle.
-if (dernierThread) {
-
-    journaliser(
-        "Cycle " + to_string(cycleTermine) +
-        " - duree : " + to_string(dureeCycle) +
-        " ms"
-    );
-
-    journaliser(
-        "Temps total cumule : " +
-        to_string(dureeCumulee) + " ms"
-    );
-}
-
-
+                to_string(dureeFabrication) + " ms");
+    terminerThread();
 }
 
 
