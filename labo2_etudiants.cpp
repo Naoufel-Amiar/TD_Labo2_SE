@@ -42,6 +42,21 @@ unsigned long long ticketThread[MAX] = {};
 bool threadEnAttente[MAX] = {};
 
 
+ // CHRONOMETRAGE GLOBAL DES CYCLES
+
+ // Mutex protegeant les mesures partagees.
+ mutex mutexChrono;
+
+ // Debut du cycle en cours.
+ chrono::steady_clock::time_point debutCycle;
+
+ // Nombre de threads entres et termines dans le cycle.
+ int threadsEntres = 0;
+ int threadsTermines = 0;
+
+ // Numero du cycle et duree cumulee.
+ int numeroCycle = 0;
+ long long tempsTotalCycles = 0;
 
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! NE PAS TOUCHER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
@@ -71,6 +86,18 @@ bool threadEnAttente[MAX] = {};
 
 
 void create(int i, craft_t *c) {
+
+  // DEBUT DU CHRONOMETRAGE DU CYCLE
+  {
+      lock_guard<mutex> verrouChrono(mutexChrono);
+
+      if (threadsEntres == 0) {
+          debutCycle = chrono::steady_clock::now();
+          numeroCycle++;
+      }
+
+      threadsEntres++;
+  }
 
     // =====================================================
     // 1. IDENTIFICATION DES MATERIAUX
@@ -215,9 +242,21 @@ void create(int i, craft_t *c) {
 
     journaliser(objet + " en creation.");
 
+    // Debut de la mesure de fabrication.
+    auto debutCreation = chrono::steady_clock::now();
+
+    // Simulation du temps de fabrication : 200 ms.
     this_thread::sleep_for(
         chrono::milliseconds(200)
     );
+
+    // Fin de la mesure de fabrication.
+    auto finCreation = chrono::steady_clock::now();
+
+    // Calcul de la duree reelle en millisecondes.
+    auto dureeCreation = chrono::duration_cast<
+        chrono::milliseconds
+    >(finCreation - debutCreation).count();
 
     // =====================================================
     // 7. LIBERATION ET COMPTEUR
@@ -253,6 +292,59 @@ void create(int i, craft_t *c) {
 
     journaliser(objet + " cree : " +
                 to_string(nombreCree));
+    
+    // Enregistrer le temps de fabrication mesure.
+    journaliser(objet + " - duree de fabrication : " +
+                to_string(dureeCreation) + " ms");
+
+
+    // FIN DU CHRONOMETRAGE DU CYCLE
+    bool dernierThread = false;
+    int cycleTermine = 0;
+    long long dureeCycle = 0;
+    long long dureeCumulee = 0;
+    {
+        lock_guard<mutex> verrouChrono(mutexChrono);
+
+        threadsTermines++;
+
+        // Le dernier des sept threads termine le cycle.
+        if (threadsTermines == MAX) {
+
+            auto finCycle = chrono::steady_clock::now();
+
+            dureeCycle = chrono::duration_cast<
+                chrono::milliseconds
+            >(finCycle - debutCycle).count();
+
+            tempsTotalCycles += dureeCycle;
+            dureeCumulee = tempsTotalCycles;
+            cycleTermine = numeroCycle;
+
+            // Preparation du prochain cycle.
+            threadsEntres = 0;
+            threadsTermines = 0;
+
+            dernierThread = true;
+        }
+    }
+
+// Afficher une seule fois le bilan du cycle.
+if (dernierThread) {
+
+    journaliser(
+        "Cycle " + to_string(cycleTermine) +
+        " - duree : " + to_string(dureeCycle) +
+        " ms"
+    );
+
+    journaliser(
+        "Temps total cumule : " +
+        to_string(dureeCumulee) + " ms"
+    );
+}
+
+
 }
 
 
