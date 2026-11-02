@@ -1,0 +1,819 @@
+Coupe en creation.
+Porte en attente de Or.
+Table en attente de materiaux.
+Epee en attente de materiaux.
+Bracelet en attente de Argent.
+Chandelier en attente de materiaux.
+Bague en attente de materiaux.
+Porte en creation.
+Coupe cree : 1
+Coupe - duree de fabrication : 200 ms
+Porte cree : 1
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Table cree : 1
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Bague cree : 1
+Bague - duree de fabrication : 200 ms
+Chandelier en creation.
+Chandelier cree : 1
+Chandelier - duree de fabrication : 201 ms
+Epee en creation.
+Epee cree : 1
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Bracelet cree : 1
+Bracelet - duree de fabrication : 200 ms
+Coupe en creation.
+Bague en creation.
+Porte en attente de Or.
+Table en attente de Metal.
+Epee en creation.
+Bracelet en attente de Jade.
+Chandelier en attente de Diamant.
+Coupe cree : 2
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Bague cree : 2
+Bracelet en creation.
+Chandelier en creation.
+Bague - duree de fabrication : 200 ms
+Epee cree : 2
+Epee - duree de fabrication : 200 ms
+Porte cree : 2
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Bracelet cree : 2
+Bracelet - duree de fabrication : 201 ms
+Chandelier cree : 2
+Chandelier - duree de fabrication : 201 ms
+Table cree : 2
+Table - duree de fabrication : 200 ms
+Coupe en creation.
+Porte en attente de Or.
+Chandelier en creation.
+Epee en attente de Fer.
+Table en attente de materiaux.
+Bracelet en attente de Argent.
+Bague en attente de Diamant.
+Coupe cree : 3
+Coupe - duree de fabrication : 201 ms
+Porte en creation.
+Chandelier cree : 3
+Chandelier - duree de fabrication : 200 ms
+Epee en creation.
+Porte cree : 3
+Porte - duree de fabrication : 200 ms
+Epee cree : 3
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Table en creation.
+Table cree : 3
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Bracelet cree : 3
+Bracelet - duree de fabrication : 201 ms
+Bague cree : 3
+Bague - duree de fabrication : 200 ms
+Porte en creation.
+Bague en creation.
+Chandelier en attente de Diamant.
+Epee en attente de materiaux.
+Coupe en attente de Or.
+Bracelet en attente de materiaux.
+Table en attente de Bois.
+Porte cree : 4
+Porte - duree de fabrication : 200 ms
+Coupe en creation.
+Bague cree : 4
+Bague - duree de fabrication : 201 ms
+Table en creation.
+Chandelier en creation.
+Coupe cree : 4
+Coupe - duree de fabrication : 200 ms
+Chandelier cree : 4
+Chandelier - duree de fabrication : 200 ms
+Table cree : 4
+Table - duree de fabrication : 201 ms
+Epee en creation.
+Epee cree : 4
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Bracelet cree : 4
+Bracelet - duree de fabrication : 200 ms
+Coupe en creation.
+Bague en creation.
+Porte en attente de Or.
+Table en attente de Metal.
+Chandelier en attente de Diamant.
+Bracelet en attente de Jade.
+Epee en creation.
+Bague cree : 5
+Bague - duree de fabrication : 200 ms
+Coupe cree : 5
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Bracelet en creation.
+Chandelier en creation.
+Epee cree : 5
+Epee - duree de fabrication : 200 ms
+Porte cree : 5
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Bracelet cree : 5
+Bracelet - duree de fabrication : 200 ms
+Chandelier cree : 5
+Chandelier - duree de fabrication : 200 ms
+Table cree : 5
+Table - duree de fabrication : 200 ms
+Coupe en creation.
+Porte en attente de Or.
+Chandelier en attente de Fer.
+Epee en creation.
+Bague en attente de materiaux.
+Table en attente de materiaux.
+Bracelet en attente de Jade.
+Coupe cree : 6
+Coupe - duree de fabrication : 200 ms
+Epee cree : 6
+Epee - duree de fabrication : 200 ms
+Porte en creation.
+Chandelier en creation.
+Bracelet en creation.
+Porte cree : 6
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Chandelier cree : 6
+Chandelier - duree de fabrication : 200 ms
+Bracelet cree : 6
+Bracelet - duree de fabrication : 200 ms
+Table cree : 6
+Bague en creation.
+Table - duree de fabrication : 200 ms
+Bague cree : 6
+Bague - duree de fabrication : 200 ms
+Coupe en creation.
+Table en creation.
+Chandelier en attente de materiaux.
+Bague en attente de Metal.
+Porte en attente de Or.
+Epee en attente de materiaux.
+Bracelet en attente de Argent.
+Coupe cree : 7
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Table cree : 7
+Table - duree de fabrication : 201 ms
+Bague en creation.
+Porte cree : 7
+Porte - duree de fabrication : 200 ms
+Bague cree : 7
+Bague - duree de fabrication : 200 ms
+Chandelier en creation.
+Chandelier cree : 7
+Chandelier - duree de fabrication : 200 ms
+Epee en creation.
+Epee cree : 7
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Bracelet cree : 7
+Bracelet - duree de fabrication : 200 ms
+Coupe en creation.
+Porte en attente de Or.
+Chandelier en creation.
+Table en attente de materiaux.
+Bague en attente de Diamant.
+Epee en attente de Fer.
+Bracelet en attente de Argent.
+Coupe cree : 8
+Coupe - duree de fabrication : 200 ms
+Chandelier cree : 8
+Chandelier - duree de fabrication : 200 ms
+Porte en creation.
+Epee en creation.
+Epee cree : 8
+Epee - duree de fabrication : 200 ms
+Porte cree : 8
+Porte - duree de fabrication : 201 ms
+Table en creation.
+Bracelet en creation.
+Table cree : 8
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Bracelet cree : 8
+Bracelet - duree de fabrication : 201 ms
+Bague cree : 8
+Bague - duree de fabrication : 200 ms
+Coupe en creation.
+Porte en attente de Or.
+Chandelier en creation.
+Table en attente de materiaux.
+Epee en attente de Fer.
+Bague en attente de Diamant.
+Bracelet en attente de Argent.
+Coupe cree : 9
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Epee en creation.
+Chandelier cree : 9
+Chandelier - duree de fabrication : 200 ms
+Porte cree : 9
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Epee cree : 9
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Table cree : 9
+Table - duree de fabrication : 200 ms
+Bracelet cree : 9
+Bracelet - duree de fabrication : 200 ms
+Bague en creation.
+Bague cree : 9
+Bague - duree de fabrication : 201 ms
+Coupe en creation.
+Porte en attente de Or.
+Epee en creation.
+Bague en attente de materiaux.
+Chandelier en attente de Fer.
+Bracelet en attente de Jade.
+Table en attente de materiaux.
+Coupe cree : 10
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Epee cree : 10
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Porte cree : 10
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Bracelet cree : 10
+Bracelet - duree de fabrication : 200 ms
+Table cree : 10
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Bague cree : 10
+Bague - duree de fabrication : 200 ms
+Chandelier en creation.
+Chandelier cree : 10
+Chandelier - duree de fabrication : 200 ms
+Coupe en creation.
+Bague en creation.
+Porte en attente de Or.
+Bracelet en attente de Jade.
+Table en attente de Metal.
+Chandelier en attente de Diamant.
+Epee en creation.
+Coupe cree : 1
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Bague cree : 1
+Bague - duree de fabrication : 200 ms
+Epee cree : 1
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Chandelier en creation.
+Porte cree : 1
+Porte - duree de fabrication : 201 ms
+Table en creation.
+Chandelier cree : 1
+Chandelier - duree de fabrication : 200 ms
+Bracelet cree : 1
+Bracelet - duree de fabrication : 200 ms
+Table cree : 1
+Table - duree de fabrication : 200 ms
+Cycle 1 - duree : 604 ms
+Temps total cumule : 604 ms
+Coupe en creation.
+Porte en attente de Or.
+Epee en creation.
+Table en attente de materiaux.
+Bague en attente de materiaux.
+Bracelet en attente de Jade.
+Chandelier en attente de Fer.
+Coupe cree : 2
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Epee cree : 2
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Porte cree : 2
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Bracelet cree : 2
+Bracelet - duree de fabrication : 200 ms
+Table cree : 2
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Bague cree : 2
+Bague - duree de fabrication : 201 ms
+Chandelier en creation.
+Chandelier cree : 2
+Chandelier - duree de fabrication : 200 ms
+Cycle 2 - duree : 1010 ms
+Temps total cumule : 1614 ms
+Coupe en creation.
+Porte en attente de Or.
+Bague en attente de materiaux.
+Bracelet en attente de Jade.
+Epee en creation.
+Chandelier en attente de Fer.
+Table en attente de materiaux.
+Coupe cree : 3
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Epee cree : 3
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Porte cree : 3
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Bracelet cree : 3
+Bracelet - duree de fabrication : 200 ms
+Table cree : 3
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Bague cree : 3
+Bague - duree de fabrication : 201 ms
+Chandelier en creation.
+Chandelier cree : 3
+Chandelier - duree de fabrication : 200 ms
+Cycle 3 - duree : 1010 ms
+Temps total cumule : 2624 ms
+Coupe en creation.
+Bague en creation.
+Chandelier en attente de Diamant.
+Porte en attente de Or.
+Table en attente de Metal.
+Epee en attente de materiaux.
+Bracelet en attente de Argent.
+Coupe cree : 4
+Coupe - duree de fabrication : 201 ms
+Porte en creation.
+Bague cree : 4
+Bague - duree de fabrication : 201 ms
+Chandelier en creation.
+Porte cree : 4
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Chandelier cree : 4
+Chandelier - duree de fabrication : 201 ms
+Epee en creation.
+Table cree : 4
+Table - duree de fabrication : 201 ms
+Epee cree : 4
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Bracelet cree : 4
+Bracelet - duree de fabrication : 201 ms
+Cycle 4 - duree : 809 ms
+Temps total cumule : 3433 ms
+Coupe en creation.
+Bague en creation.
+Porte en attente de Or.
+Chandelier en attente de Diamant.
+Table en attente de Metal.
+Epee en attente de materiaux.
+Bracelet en attente de Argent.
+Coupe cree : 5
+Coupe - duree de fabrication : 200 ms
+Bague cree : 5
+Bague - duree de fabrication : 200 ms
+Porte en creation.
+Chandelier en creation.
+Porte cree : 5
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Chandelier cree : 5
+Chandelier - duree de fabrication : 201 ms
+Epee en creation.
+Table cree : 5
+Table - duree de fabrication : 200 ms
+Epee cree : 5
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Bracelet cree : 5
+Bracelet - duree de fabrication : 200 ms
+Cycle 5 - duree : 811 ms
+Temps total cumule : 4244 ms
+Porte en creation.
+Chandelier en creation.
+Coupe en attente de Or.
+Bague en attente de Diamant.
+Table en attente de Bois.
+Bracelet en attente de materiaux.
+Epee en attente de Fer.
+Coupe en creation.
+Porte cree : 6
+Porte - duree de fabrication : 200 ms
+Chandelier cree : 6
+Chandelier - duree de fabrication : 200 ms
+Bague en creation.
+Coupe cree : 6
+Coupe - duree de fabrication : 200 ms
+Bracelet en creation.
+Bague cree : 6
+Bague - duree de fabrication : 200 ms
+Table en creation.
+Bracelet cree : 6
+Bracelet - duree de fabrication : 200 ms
+Epee en creation.
+Table cree : 6
+Table - duree de fabrication : 200 ms
+Epee cree : 6
+Epee - duree de fabrication : 200 ms
+Cycle 6 - duree : 806 ms
+Temps total cumule : 5050 ms
+Porte en creation.
+Table en attente de Bois.
+Chandelier en creation.
+Epee en attente de Fer.
+Coupe en attente de Or.
+Bague en attente de Diamant.
+Bracelet en attente de materiaux.
+Porte cree : 7
+Porte - duree de fabrication : 200 ms
+Coupe en creation.
+Table en creation.
+Epee en creation.
+Chandelier cree : 7
+Chandelier - duree de fabrication : 200 ms
+Coupe cree : 7
+Coupe - duree de fabrication : 200 ms
+Bracelet en creation.
+Epee cree : 7
+Table cree : 7
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Epee - duree de fabrication : 200 ms
+Bracelet cree : 7
+Bracelet - duree de fabrication : 201 ms
+Bague cree : 7
+Bague - duree de fabrication : 200 ms
+Cycle 7 - duree : 605 ms
+Temps total cumule : 5655 ms
+Coupe en creation.
+Porte en attente de Or.
+Bague en creation.
+Table en attente de Metal.
+Chandelier en attente de Diamant.
+Epee en attente de materiaux.
+Bracelet en attente de Argent.
+Coupe cree : 8
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Chandelier en creation.
+Bague cree : 8
+Bague - duree de fabrication : 201 ms
+Porte cree : 8
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Epee en creation.
+Chandelier cree : 8
+Chandelier - duree de fabrication : 201 ms
+Table cree : 8
+Table - duree de fabrication : 200 ms
+Epee cree : 8
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Bracelet cree : 8
+Bracelet - duree de fabrication : 201 ms
+Cycle 8 - duree : 809 ms
+Temps total cumule : 6464 ms
+Coupe en creation.
+Porte en attente de Or.
+Bague en creation.
+Chandelier en attente de Diamant.
+Table en attente de Metal.
+Epee en attente de materiaux.
+Bracelet en attente de Argent.
+Porte en creation.
+Coupe cree : 9
+Coupe - duree de fabrication : 201 ms
+Bague cree : 9
+Bague - duree de fabrication : 200 ms
+Chandelier en creation.
+Porte cree : 9
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Chandelier cree : 9
+Chandelier - duree de fabrication : 200 ms
+Epee en creation.
+Table cree : 9
+Table - duree de fabrication : 200 ms
+Epee cree : 9
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Bracelet cree : 9
+Bracelet - duree de fabrication : 200 ms
+Cycle 9 - duree : 808 ms
+Temps total cumule : 7272 ms
+Coupe en creation.
+Chandelier en creation.
+Epee en attente de Fer.
+Porte en attente de Or.
+Table en attente de materiaux.
+Bague en attente de Diamant.
+Bracelet en attente de Argent.
+Coupe cree : 10
+Coupe - duree de fabrication : 200 ms
+Chandelier cree : 10
+Chandelier - duree de fabrication : 201 ms
+Porte en creation.
+Epee en creation.
+Porte cree : 10
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Epee cree : 10
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Table cree : 10
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Bracelet cree : 10
+Bracelet - duree de fabrication : 200 ms
+Bague cree : 10
+Bague - duree de fabrication : 200 ms
+Cycle 10 - duree : 809 ms
+Temps total cumule : 8081 ms
+Coupe en creation.
+Epee en creation.
+Chandelier en attente de Fer.
+Table en creation.
+Porte en attente de Or.
+Bague en attente de Metal.
+Bracelet en attente de Jade.
+Coupe cree : 1
+Coupe - duree de fabrication : 200 ms
+Epee cree : 1
+Epee - duree de fabrication : 200 ms
+Porte en creation.
+Bracelet en creation.
+Chandelier en creation.
+Table cree : 1
+Table - duree de fabrication : 200 ms
+Porte cree : 1
+Porte - duree de fabrication : 200 ms
+Chandelier cree : 1
+Chandelier - duree de fabrication : 200 ms
+Bague en creation.
+Bracelet cree : 1
+Bracelet - duree de fabrication : 201 ms
+Bague cree : 1
+Bague - duree de fabrication : 200 ms
+Cycle 1 - duree : 609 ms
+Temps total cumule : 609 ms
+Coupe en creation.
+Table en attente de Bois.
+Porte en attente de Or.
+Chandelier en creation.
+Bague en attente de Diamant.
+Epee en attente de Fer.
+Bracelet en attente de Argent.
+Coupe cree : 2
+Coupe - duree de fabrication : 201 ms
+Porte en creation.
+Chandelier cree : 2
+Chandelier - duree de fabrication : 201 ms
+Epee en creation.
+Porte cree : 2
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Epee cree : 2
+Epee - duree de fabrication : 201 ms
+Bracelet en creation.
+Table cree : 2
+Bague en creation.
+Table - duree de fabrication : 201 ms
+Bracelet cree : 2
+Bracelet - duree de fabrication : 200 ms
+Bague cree : 2
+Bague - duree de fabrication : 200 ms
+Cycle 2 - duree : 809 ms
+Temps total cumule : 1418 ms
+Coupe en creation.
+Table en attente de Bois.
+Bague en attente de Metal.
+Chandelier en attente de Diamant.
+Bracelet en attente de Argent.
+Epee en attente de Fer.
+Porte en attente de Or.
+Coupe cree : 3
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Porte cree : 3
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Table cree : 3
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Bague cree : 3
+Bague - duree de fabrication : 200 ms
+Chandelier en creation.
+Chandelier cree : 3
+Chandelier - duree de fabrication : 200 ms
+Epee en creation.
+Epee cree : 3
+Epee - duree de fabrication : 201 ms
+Bracelet en creation.
+Bracelet cree : 3
+Bracelet - duree de fabrication : 200 ms
+Cycle 3 - duree : 1415 ms
+Temps total cumule : 2833 ms
+Chandelier en creation.
+Coupe en attente de Or.
+Table en attente de Bois.
+Bague en attente de Diamant.
+Porte en creation.
+Epee en attente de Fer.
+Bracelet en attente de Argent.
+Chandelier cree : 4
+Chandelier - duree de fabrication : 200 ms
+Epee en creation.
+Table en creation.
+Coupe en creation.
+Porte cree : 4
+Porte - duree de fabrication : 200 ms
+Epee cree : 4
+Epee - duree de fabrication : 200 ms
+Table cree : 4
+Table - duree de fabrication : 200 ms
+Bracelet en creation.
+Bague en creation.
+Coupe cree : 4
+Coupe - duree de fabrication : 201 ms
+Bague cree : 4
+Bague - duree de fabrication : 200 ms
+Bracelet cree : 4
+Bracelet - duree de fabrication : 200 ms
+Cycle 4 - duree : 609 ms
+Temps total cumule : 3442 ms
+Coupe en creation.
+Chandelier en creation.
+Porte en attente de Or.
+Table en attente de Bois.
+Bague en attente de Diamant.
+Epee en attente de Fer.
+Bracelet en attente de Argent.
+Coupe cree : 5
+Coupe - duree de fabrication : 201 ms
+Bracelet en creation.
+Porte en creation.
+Chandelier cree : 5
+Chandelier - duree de fabrication : 201 ms
+Porte cree : 5
+Epee en creation.
+Table en creation.
+Porte - duree de fabrication : 200 ms
+Bracelet cree : 5
+Bracelet - duree de fabrication : 200 ms
+Epee cree : 5
+Epee - duree de fabrication : 200 ms
+Table cree : 5
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Bague cree : 5
+Bague - duree de fabrication : 200 ms
+Cycle 5 - duree : 807 ms
+Temps total cumule : 4249 ms
+Coupe en creation.
+Epee en creation.
+Chandelier en attente de Fer.
+Table en attente de Bois.
+Porte en attente de Or.
+Bague en attente de Metal.
+Bracelet en attente de Jade.
+Coupe cree : 6
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Chandelier en creation.
+Bracelet en creation.
+Epee cree : 6
+Epee - duree de fabrication : 200 ms
+Porte cree : 6
+Porte - duree de fabrication : 201 ms
+Chandelier cree : 6
+Chandelier - duree de fabrication : 201 ms
+Bracelet cree : 6
+Bracelet - duree de fabrication : 200 ms
+Table en creation.
+Table cree : 6
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Bague cree : 6
+Bague - duree de fabrication : 200 ms
+Cycle 6 - duree : 808 ms
+Temps total cumule : 5057 ms
+Coupe en creation.
+Table en creation.
+Bague en attente de Metal.
+Porte en attente de Or.
+Chandelier en attente de Diamant.
+Epee en attente de Fer.
+Bracelet en attente de Argent.
+Table cree : 7
+Table - duree de fabrication : 200 ms
+Porte en creation.
+Bague en creation.
+Coupe cree : 7
+Coupe - duree de fabrication : 201 ms
+Porte cree : 7
+Porte - duree de fabrication : 200 ms
+Bague cree : 7
+Bague - duree de fabrication : 200 ms
+Chandelier en creation.
+Chandelier cree : 7
+Chandelier - duree de fabrication : 201 ms
+Epee en creation.
+Epee cree : 7
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Bracelet cree : 7
+Bracelet - duree de fabrication : 201 ms
+Cycle 7 - duree : 1011 ms
+Temps total cumule : 6068 ms
+Porte en creation.
+Coupe en attente de Or.
+Table en attente de Bois.
+Chandelier en creation.
+Bague en attente de Diamant.
+Epee en attente de Fer.
+Bracelet en attente de Argent.
+Porte cree : 8
+Porte - duree de fabrication : 201 ms
+Table en creation.
+Coupe en creation.
+Chandelier cree : 8
+Chandelier - duree de fabrication : 200 ms
+Epee en creation.
+Coupe cree : 8
+Coupe - duree de fabrication : 200 ms
+Table cree : 8
+Table - duree de fabrication : 200 ms
+Bracelet en creation.
+Bague en creation.
+Epee cree : 8
+Epee - duree de fabrication : 200 ms
+Bracelet cree : 8
+Bracelet - duree de fabrication : 201 ms
+Bague cree : 8
+Bague - duree de fabrication : 200 ms
+Cycle 8 - duree : 607 ms
+Temps total cumule : 6675 ms
+Coupe en creation.
+Chandelier en creation.
+Porte en attente de Or.
+Table en attente de Bois.
+Bague en attente de Diamant.
+Bracelet en attente de Argent.
+Epee en attente de Fer.
+Porte en creation.
+Coupe cree : 9
+Coupe - duree de fabrication : 200 ms
+Bracelet en creation.
+Chandelier cree : 9
+Chandelier - duree de fabrication : 200 ms
+Porte cree : 9
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Bracelet cree : 9
+Bracelet - duree de fabrication : 200 ms
+Epee en creation.
+Table cree : 9
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Epee cree : 9
+Epee - duree de fabrication : 201 ms
+Bague cree : 9
+Bague - duree de fabrication : 200 ms
+Cycle 9 - duree : 808 ms
+Temps total cumule : 7483 ms
+Coupe en creation.
+Table en attente de Bois.
+Bague en attente de Metal.
+Chandelier en attente de Diamant.
+Epee en attente de Fer.
+Porte en attente de Or.
+Bracelet en attente de Argent.
+Coupe cree : 10
+Coupe - duree de fabrication : 200 ms
+Porte en creation.
+Porte cree : 10
+Porte - duree de fabrication : 200 ms
+Table en creation.
+Table cree : 10
+Table - duree de fabrication : 200 ms
+Bague en creation.
+Bague cree : 10
+Bague - duree de fabrication : 200 ms
+Chandelier en creation.
+Chandelier cree : 10
+Chandelier - duree de fabrication : 200 ms
+Epee en creation.
+Epee cree : 10
+Epee - duree de fabrication : 200 ms
+Bracelet en creation.
+Bracelet cree : 10
+Bracelet - duree de fabrication : 201 ms
+Cycle 10 - duree : 1415 ms
+Temps total cumule : 8898 ms
