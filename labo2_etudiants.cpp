@@ -20,12 +20,26 @@ string b[MAX] = {"Free", "Free", "Free", "Free", "Free", "Free", "Free"}; // la 
 
 /////////////////////////////////////////////////////////////
 //AJOUTER VOS INCLUDE ET AUTRES ICI!!!!!!!!!!!!!!!!!!!!!!!!//
-
-
-
-
-
 /////////////////////////////////////////////////////////////
+
+#include <mutex>
+#include <condition_variable>
+#include <algorithm>
+#include <fstream>
+
+// Protection des materiaux et des compteurs.
+mutex mutexMateriaux;
+
+// Protection des affichages et du fichier texte.
+mutex mutexFichier;
+
+// Reveil des threads en attente de materiaux.
+condition_variable cvMateriaux;
+
+// Gestion de l'ordre des demandes.
+unsigned long long prochainTicket = 0;
+unsigned long long ticketThread[MAX] = {};
+bool threadEnAttente[MAX] = {};
 
 
 
@@ -55,16 +69,195 @@ string b[MAX] = {"Free", "Free", "Free", "Free", "Free", "Free", "Free"}; // la 
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
 
-void create(int i, craft_t *c){                                                                 // *** Début fonction create() ***************** //
-    list<string>::iterator it = c->liste.begin();                                               // Création itérateur it pour faire une recherche.
-    advance(it,1);                                                                              // On place l'itérateur à la seconde position de la file pour savoir la valeur.
-	
-	/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-	//AJOUTER VOTRE CODE ICI.
-    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
-                                                                                            ///////////////////////////////////////////////////
-}                                                                                               // *** Fin fonction create() ******************* //
+void create(int i, craft_t *c) {
+
+    // =====================================================
+    // 1. IDENTIFICATION DES MATERIAUX
+    // =====================================================
+
+    const string materiau1 = c->name[i];
+    const string materiau2 = c->name[(i + 1) % MAX];
+    const string objet = c->craft_name[i];
+
+    // Affiche un message et l'enregistre dans le fichier.
+    auto journaliser = [&](const string& message) {
+        lock_guard<mutex> verrou(mutexFichier);
+
+        cout << message << endl;
+
+        ofstream fichier("sortieCreation.txt", ios::app);
+        if (fichier.is_open()) {
+            fichier << message << endl;
+        }
+    };
+
+    // =====================================================
+    // 2. ENREGISTREMENT DE LA DEMANDE
+    // =====================================================
+
+    unique_lock<mutex> verrou(mutexMateriaux);
+
+    // Ce type d'objet a deja atteint son objectif.
+    if (c->craft[i] >= 10) {
+        return;
+    }
+
+    // Chaque demande recoit un ticket unique.
+    ticketThread[i] = prochainTicket++;
+    threadEnAttente[i] = true;
+
+    // =====================================================
+    // 3. VERIFICATION DES CONDITIONS
+    // =====================================================
+
+    auto peutFabriquer = [&]() {
+
+        // Les deux materiaux doivent etre disponibles.
+        bool disponible1 = find(
+            c->liste.begin(),
+            c->liste.end(),
+            materiau1
+        ) != c->liste.end();
+
+        bool disponible2 = find(
+            c->liste.begin(),
+            c->liste.end(),
+            materiau2
+        ) != c->liste.end();
+
+        if (!disponible1 || !disponible2) {
+            return false;
+        }
+
+        // Respecter les demandes plus anciennes
+        // si elles utilisent un materiau commun.
+        for (int j = 0; j < MAX; j++) {
+
+            if (j == i || !threadEnAttente[j]) {
+                continue;
+            }
+
+            if (ticketThread[j] >= ticketThread[i]) {
+                continue;
+            }
+
+            string autre1 = c->name[j];
+            string autre2 = c->name[(j + 1) % MAX];
+
+            bool conflit =
+                materiau1 == autre1 ||
+                materiau1 == autre2 ||
+                materiau2 == autre1 ||
+                materiau2 == autre2;
+
+            if (conflit) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+    // =====================================================
+    // 4. ATTENTE DES MATERIAUX
+    // =====================================================
+
+    if (!peutFabriquer()) {
+
+        string materiauAttendu = "materiaux";
+
+        if (find(c->liste.begin(), c->liste.end(),
+                 materiau1) == c->liste.end()) {
+            materiauAttendu = materiau1;
+        }
+        else if (find(c->liste.begin(), c->liste.end(),
+                      materiau2) == c->liste.end()) {
+            materiauAttendu = materiau2;
+        }
+
+        a[i] = "Waiting";
+        b[i] = "Waiting";
+
+        // Ne pas monopoliser le mutex pour le journal.
+        verrou.unlock();
+
+        journaliser(objet + " en attente de " +
+                    materiauAttendu + ".");
+
+        verrou.lock();
+    }
+
+    // Attend sans conserver le verrou pendant le sommeil.
+    // La condition est reverifiee apres chaque reveil.
+    cvMateriaux.wait(verrou, peutFabriquer);
+
+    // =====================================================
+    // 5. RESERVATION SIMULTANEE
+    // =====================================================
+
+    c->liste.remove(materiau1);
+    c->liste.remove(materiau2);
+
+    threadEnAttente[i] = false;
+
+    a[i] = materiau1;
+    b[i] = materiau2;
+
+    verrou.unlock();
+
+    // D'autres demandes independantes peuvent progresser.
+    cvMateriaux.notify_all();
+
+    // =====================================================
+    // 6. FABRICATION
+    // =====================================================
+
+    journaliser(objet + " en creation.");
+
+    this_thread::sleep_for(
+        chrono::milliseconds(200)
+    );
+
+    // =====================================================
+    // 7. LIBERATION ET COMPTEUR
+    // =====================================================
+
+    verrou.lock();
+
+    c->liste.push_back(materiau1);
+    c->liste.push_back(materiau2);
+
+    c->craft[i]++;
+
+    int nombreCree = c->craft[i];
+
+    // Verifier si les sept objectifs sont atteints.
+    bool toutTermine = true;
+
+    for (int j = 0; j < MAX; j++) {
+        if (c->craft[j] < 10) {
+            toutTermine = false;
+            break;
+        }
+    }
+
+    if (toutTermine) {
+        done = true;
+    }
+
+    verrou.unlock();
+
+    // Reveiller les threads qui attendent ces ressources.
+    cvMateriaux.notify_all();
+
+    journaliser(objet + " cree : " +
+                to_string(nombreCree));
+}
+
+
+
+                                                                                             // *** Fin fonction create() ******************* //
 
 /*!!!!!!!!!! NE PAS TOUCHER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 void start(craft_t *c){                                                                         // *** Début fonction start() ****************** //
