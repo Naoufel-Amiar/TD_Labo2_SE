@@ -84,156 +84,361 @@ bool threadEnAttente[MAX] = {};
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
 
+
 void create(int i, craft_t *c) {
+
     using Horloge = chrono::steady_clock;
 
-    // Debut du cycle : le premier thread lance le chronometre.
+    // =====================================================
+    // 1. CHRONOMETRAGE DU CYCLE
+    // =====================================================
+
     {
         lock_guard<mutex> garde(mutexChrono);
+
         if (threadsEntres == 0) {
             debutCycle = Horloge::now();
             ++numeroCycle;
         }
+
         ++threadsEntres;
     }
+
+    // =====================================================
+    // 2. IDENTIFICATION DES MATERIAUX
+    // =====================================================
 
     const string materiau1 = c->name[i];
     const string materiau2 = c->name[(i + 1) % MAX];
     const string objet = c->craft_name[i];
 
-    // Une seule ecriture a la fois dans la console et le fichier.
+    // =====================================================
+    // 3. JOURNALISATION
+    // =====================================================
+
+    // Une seule ecriture a la fois dans le terminal
+    // et dans le fichier sortieCreation.txt.
+
     auto journaliser = [&](const string& message) {
+
         lock_guard<mutex> garde(mutexFichier);
+
         cout << message << endl;
+
         ofstream fichier("sortieCreation.txt", ios::app);
+
         if (!fichier || !(fichier << message << '\n')) {
-            cerr << "Erreur : ecriture dans sortieCreation.txt" << endl;
+            cerr << "Erreur : ecriture dans sortieCreation.txt"
+                 << endl;
         }
     };
 
-    // Tous les chemins de sortie doivent signaler la fin du thread.
+    // =====================================================
+    // 4. TERMINAISON ET CHRONOMETRAGE GLOBAL
+    // =====================================================
+
+    // Tous les chemins de sortie de create()
+    // passent par cette fonction.
+
     auto terminerThread = [&]() {
+
         bool dernier = false;
         int cycle = 0;
         long long duree = 0;
         long long cumul = 0;
+
         {
             lock_guard<mutex> garde(mutexChrono);
+
             ++threadsTermines;
+
             if (threadsTermines == MAX) {
-                duree = chrono::duration_cast<chrono::milliseconds>(
-                    Horloge::now() - debutCycle).count();
+
+                duree = chrono::duration_cast<
+                    chrono::milliseconds
+                >(Horloge::now() - debutCycle).count();
+
                 tempsTotalCycles += duree;
+
                 cumul = tempsTotalCycles;
                 cycle = numeroCycle;
+
+                // Reinitialisation pour le prochain cycle.
                 threadsEntres = 0;
                 threadsTermines = 0;
+
                 dernier = true;
             }
         }
+
+        // Seul le dernier thread affiche le bilan.
         if (dernier) {
-            journaliser("Cycle " + to_string(cycle) +
-                        " - duree : " + to_string(duree) + " ms");
-            journaliser("Temps total cumule : " +
-                        to_string(cumul) + " ms");
+
+            journaliser(
+                "Cycle " + to_string(cycle) +
+                " - duree : " + to_string(duree) + " ms"
+            );
+
+            journaliser(
+                "Temps total cumule : " +
+                to_string(cumul) + " ms"
+            );
         }
     };
 
+    // =====================================================
+    // 5. ACCES AUX RESSOURCES PARTAGEES
+    // =====================================================
+
     unique_lock<mutex> verrou(mutexMateriaux);
+
+    // Ne pas fabriquer plus de dix objets par type.
     if (c->craft[i] >= 10) {
+
         verrou.unlock();
         terminerThread();
         return;
     }
 
-    // Les demandes plus anciennes ont priorite en cas de conflit.
+    // Attribution d'un ticket unique.
     ticketThread[i] = prochainTicket++;
     threadEnAttente[i] = true;
 
-    auto disponible = [&](const string& m) {
-        return find(c->liste.begin(), c->liste.end(), m) != c->liste.end();
+    // =====================================================
+    // 6. VERIFICATION DES MATERIAUX
+    // =====================================================
+
+    // Cette fonction est utilisee uniquement lorsque
+    // mutexMateriaux est verrouille.
+
+    auto disponible = [&](const string& materiau) {
+
+        return find(
+            c->liste.begin(),
+            c->liste.end(),
+            materiau
+        ) != c->liste.end();
     };
 
+    // Determine si le thread peut commencer sa fabrication.
+
     auto peutFabriquer = [&]() {
-        if (!disponible(materiau1) || !disponible(materiau2))
+
+        // Les deux materiaux doivent etre disponibles.
+        if (!disponible(materiau1) ||
+            !disponible(materiau2)) {
+
             return false;
+        }
+
+        // Respecter les demandes plus anciennes
+        // lorsqu'elles utilisent un materiau commun.
+
         for (int j = 0; j < MAX; ++j) {
-            if (j == i || !threadEnAttente[j] ||
-                ticketThread[j] >= ticketThread[i])
+
+            if (j == i ||
+                !threadEnAttente[j] ||
+                ticketThread[j] >= ticketThread[i]) {
+
                 continue;
+            }
+
             const string& autre1 = c->name[j];
             const string& autre2 = c->name[(j + 1) % MAX];
-            if (materiau1 == autre1 || materiau1 == autre2 ||
-                materiau2 == autre1 || materiau2 == autre2)
+
+            bool conflit =
+                materiau1 == autre1 ||
+                materiau1 == autre2 ||
+                materiau2 == autre1 ||
+                materiau2 == autre2;
+
+            if (conflit) {
                 return false;
+            }
         }
+
         return true;
     };
 
+    // =====================================================
+    // 7. GESTION DE L'ATTENTE
+    // =====================================================
+
     if (!peutFabriquer()) {
+
         string attendu;
-        if (!disponible(materiau1)) attendu = materiau1;
-        else if (!disponible(materiau2)) attendu = materiau2;
+
+        // Identifier le materiau indisponible.
+        if (!disponible(materiau1)) {
+
+            attendu = materiau1;
+        }
+        else if (!disponible(materiau2)) {
+
+            attendu = materiau2;
+        }
         else {
-            // Materiaux libres : une demande anterieure est prioritaire.
+
+            // Les materiaux sont disponibles, mais
+            // une demande plus ancienne est prioritaire.
+
             for (int j = 0; j < MAX; ++j) {
-                if (j == i || !threadEnAttente[j] ||
-                    ticketThread[j] >= ticketThread[i]) continue;
+
+                if (j == i ||
+                    !threadEnAttente[j] ||
+                    ticketThread[j] >= ticketThread[i]) {
+
+                    continue;
+                }
+
                 const string& autre1 = c->name[j];
                 const string& autre2 = c->name[(j + 1) % MAX];
-                if (materiau1 == autre1 || materiau1 == autre2) {
+
+                if (materiau1 == autre1 ||
+                    materiau1 == autre2) {
+
                     attendu = materiau1;
                     break;
                 }
-                if (materiau2 == autre1 || materiau2 == autre2) {
+
+                if (materiau2 == autre1 ||
+                    materiau2 == autre2) {
+
                     attendu = materiau2;
                     break;
                 }
             }
         }
-        if (attendu.empty()) attendu = materiau1; // Securite defensive.
+
+        // Securite defensive.
+        if (attendu.empty()) {
+            attendu = materiau1;
+        }
+
         a[i] = "Waiting";
         b[i] = "Waiting";
+
+        // Liberer le mutex avant la journalisation.
         verrou.unlock();
-        journaliser(objet + " en attente de " + attendu + ".");
+
+        journaliser(
+            objet + " en attente de " + attendu + "."
+        );
+
         verrou.lock();
     }
 
-    // wait libere le mutex pendant l'attente ; reveil + revalidation.
+    // =====================================================
+    // 8. ATTENTE AVEC CONDITION VARIABLE
+    // =====================================================
+
+    // wait() libere temporairement mutexMateriaux.
+    // Au reveil, le predicat est reevalue sous mutex.
+
     cvMateriaux.wait(verrou, peutFabriquer);
-    // Reservation atomique : jamais un seul materiau sans le second.
+
+    // =====================================================
+    // 9. RESERVATION ATOMIQUE DES DEUX MATERIAUX
+    // =====================================================
+
+    // Le mutex est actuellement verrouille.
+    // Aucun autre thread ne peut modifier la liste.
+
     c->liste.remove(materiau1);
     c->liste.remove(materiau2);
+
+    // La demande est maintenant satisfaite.
     threadEnAttente[i] = false;
+
+    // Mettre a jour les informations d'affichage.
     a[i] = materiau1;
     b[i] = materiau2;
-    verrou.unlock();
+
+    // CORRECTION HELGRIND :
+    // Notification pendant que le mutex est detenu.
     cvMateriaux.notify_all();
 
+    // Liberer le mutex avant la fabrication.
+    verrou.unlock();
+
+    // =====================================================
+    // 10. FABRICATION DE L'OBJET
+    // =====================================================
+
     journaliser(objet + " en creation.");
+
+    // Mesure de la duree de fabrication.
     const auto debut = Horloge::now();
-    this_thread::sleep_for(chrono::milliseconds(200));
-    const auto dureeFabrication = chrono::duration_cast<chrono::milliseconds>(
-        Horloge::now() - debut).count();
+
+    // Simulation de 200 millisecondes.
+    this_thread::sleep_for(
+        chrono::milliseconds(200)
+    );
+
+    const auto fin = Horloge::now();
+
+    const auto dureeFabrication =
+        chrono::duration_cast<
+            chrono::milliseconds
+        >(fin - debut).count();
+
+    // =====================================================
+    // 11. RESTITUTION DES MATERIAUX
+    // =====================================================
 
     verrou.lock();
+
+    // Rendre les deux materiaux disponibles.
     c->liste.push_back(materiau1);
     c->liste.push_back(materiau2);
+
+    // Incrementer le compteur du bon objet.
     const int nombre = ++c->craft[i];
+
+    // =====================================================
+    // 12. VERIFICATION DE L'OBJECTIF GLOBAL
+    // =====================================================
+
     bool tousTermines = true;
+
     for (int j = 0; j < MAX; ++j) {
+
         if (c->craft[j] < 10) {
+
             tousTermines = false;
             break;
         }
     }
-    if (tousTermines) done = true;
-    verrou.unlock();
+
+    // Tous les objets ont atteint leur objectif.
+    if (tousTermines) {
+        done = true;
+    }
+
+    // CORRECTION HELGRIND :
+    // Reveiller les threads sous mutex apres restitution.
     cvMateriaux.notify_all();
 
-    journaliser(objet + " cree : " + to_string(nombre));
-    journaliser(objet + " - duree de fabrication : " +
-                to_string(dureeFabrication) + " ms");
+    // Liberer le mutex.
+    verrou.unlock();
+
+    // =====================================================
+    // 13. ENREGISTREMENT DES RESULTATS
+    // =====================================================
+
+    journaliser(
+        objet + " cree : " + to_string(nombre)
+    );
+
+    journaliser(
+        objet + " - duree de fabrication : " +
+        to_string(dureeFabrication) + " ms"
+    );
+
+    // =====================================================
+    // 14. FIN DU THREAD
+    // =====================================================
+
     terminerThread();
 }
 

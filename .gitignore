@@ -1,8 +1,40 @@
-# Executable C++
-/labo2_etudiants
 
-# Fichiers objets
+# ============================================
+# LABORATOIRE 2 - SYSTEMES D'EXPLOITATION
+# UQAC - 8INF342
+# ============================================
+
+# Executables C++
+/labo2_etudiants
+/labo2_tsan
+/labo2_helgrind
+*.out
 *.o
 
-# Fichiers temporaires
+# Fichiers temporaires de compilation
+*.obj
+*.a
+*.so
+*.swp
 *~
+
+# Rapports de diagnostic Valgrind
+helgrind.log
+vgcore.*
+
+# Fichiers de debogage
+*.core
+core
+
+# ============================================
+# FICHIERS CONSERVES DANS GIT
+# ============================================
+
+# labo2_etudiants.cpp
+# README.md
+# sortieCreation.txt
+# test1.txt
+# test2.txt
+# test3.txt
+# .vscode/tasks.json
+# .vscode/launch.json
